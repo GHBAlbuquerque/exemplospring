@@ -29,7 +29,7 @@ public class UsuarioController {
 
     @GetMapping("/usuario")
     public ResponseEntity getUsuarios(@PathParam("id") Long id){
-        List<UsuarioEntity> usuarios = service.getUsuarios(id);
+        List<UsuarioEntity> usuarios = service.getUsuarios();
 //        return ResponseEntity.ok(usuarios);
         return ResponseEntity.status(HttpStatus.OK).body(usuarios);
 //        return ResponseEntity.ok().body(usuarios);
@@ -45,17 +45,16 @@ public class UsuarioController {
     }
 
     @PutMapping("/usuario/{idUsuario}")
-    public ResponseEntity alterar(@RequestBody Usuario usuario, @PathVariable("idUsuario") Long id){
+    public ResponseEntity alterar(@RequestBody Usuario usuario, @PathVariable("idUsuario") BigInteger id){
         return ResponseEntity.ok().body(service.alterar(usuario, id));
     }
 
     @DeleteMapping("/usuario/{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id){
+    public ResponseEntity excluir(@PathVariable("id") BigInteger id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(service.excluir(id));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao excluir usuário");
         }
     }
-
 }

@@ -21,9 +21,11 @@ public class UsuarioService {
     public UsuarioEntity getUsuario(BigInteger id){
         System.out.println("ID: " + id);
         Optional<UsuarioEntity> optional = repository.findById(id);
-        return optional.get();
+        UsuarioEntity entity = optional.get();
 
-//        return repository.findById(id).get();
+        return entity;
+
+//        return repository.findById(id).get()  ;
 
 //        Usuario usuario = new Usuario();
 //        usuario.setId(entity.getIdUsuario().longValue());
@@ -34,30 +36,43 @@ public class UsuarioService {
 //        return usuario;
     }
 
-    public List<UsuarioEntity> getUsuarios(Long id){
+    public List<UsuarioEntity> getUsuarios(){
        return repository.findAll();
     }
 
-    public String excluir (Long id){
+    public String excluir (BigInteger id){
         System.out.println("ID: " + id);
+        repository.deleteById(id);
 
         return "Exclusão do ID " + id + " foi realizado com sucesso";
     }
 
-    public String alterar(Usuario usuario, Long id){
-        // TODO
+    public String alterar(Usuario usuario, BigInteger id){
 
-        System.out.println("ID: " + id);
+        UsuarioEntity entity = getUsuario(id);
 
-        System.out.println(usuario.getId());
-        System.out.println(usuario.getNome());
-        System.out.println(usuario.getCpf());
-        System.out.println(usuario.getDtNascimento());
+        entity.setNome(usuario.getNome());
+        entity.setCpf(usuario.getCpf());
+
+        entity = repository.save(entity);
+
+//        System.out.println("ID: " + id);
+//
+//        System.out.println(usuario.getId());
+//        System.out.println(usuario.getNome());
+//        System.out.println(usuario.getCpf());
+//        System.out.println(usuario.getDtNascimento());
 
         return "Alteração realizado com sucesso";
     }
 
     public String cadastrar(Usuario usuario){
+        UsuarioEntity entity = new UsuarioEntity();
+        entity.setNome(usuario.getNome());
+        entity.setCpf(usuario.getCpf());
+//        entity.setIdGenero(BigInteger.valueOf(1));
+
+        repository.save(entity);
 
         System.out.println(usuario.getId() + " . " + usuario.getNome() + " . " + usuario.getCpf() + " . " + usuario.getDtNascimento());
 
