@@ -34,29 +34,8 @@ public class UsuarioService {
 //        return usuario;
     }
 
-    public List<Usuario> getUsuarios(Long id){
-        System.out.println("ID: " + id);
-
-        List<Usuario> usuarios = new ArrayList<>();
-
-        if(id == null) {
-            Usuario usuario = new Usuario();
-            usuario.setId(1L);
-            usuario.setNome("Fabio");
-            usuario.setCpf("4572938759024");
-            usuario.setDtNascimento(new Date());
-
-            usuarios.add(usuario);
-        }
-
-        Usuario usuario2 = new Usuario();
-        usuario2.setId(2L);
-        usuario2.setNome("Ivo");
-        usuario2.setCpf("94894054890");
-        usuario2.setDtNascimento(new Date());
-        usuarios.add(usuario2);
-
-        return usuarios;
+    public List<UsuarioEntity> getUsuarios(Long id){
+       return repository.findAll();
     }
 
     public String excluir (Long id){

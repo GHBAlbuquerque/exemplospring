@@ -2,6 +2,7 @@ package com.rd.projetospring.primeiroprojeto.controller;
 
 
 import com.rd.projetospring.primeiroprojeto.dto.Usuario;
+import com.rd.projetospring.primeiroprojeto.entity.UsuarioEntity;
 import com.rd.projetospring.primeiroprojeto.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class UsuarioController {
 
     @GetMapping("/usuario")
     public ResponseEntity getUsuarios(@PathParam("id") Long id){
-        List<Usuario> usuarios = service.getUsuarios(id);
+        List<UsuarioEntity> usuarios = service.getUsuarios(id);
 //        return ResponseEntity.ok(usuarios);
         return ResponseEntity.status(HttpStatus.OK).body(usuarios);
 //        return ResponseEntity.ok().body(usuarios);
