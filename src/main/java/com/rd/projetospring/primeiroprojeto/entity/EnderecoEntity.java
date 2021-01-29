@@ -34,4 +34,5 @@ public class EnderecoEntity {
 
 //    @ManyToMany(mappedBy = "enderecos")
 //    private List<UsuarioEntity> usuarios;
+
 }

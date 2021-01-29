@@ -50,6 +50,11 @@ public class UsuarioService {
 //        return usuario;
     }
 
+    public List<UsuarioEntity> getUsuarios2(){
+
+        return repository.findAll();
+    }
+
     public List<Usuario> getUsuarios(){
 
         List<UsuarioEntity> usuariosEntities = repository.findAll();
@@ -96,6 +101,7 @@ public class UsuarioService {
         return "Exclusão do ID " + id + " foi realizado com sucesso";
     }
 
+    @Transactional
     public String alterar(Usuario usuario, BigInteger id){
 
         UsuarioEntity entity = getUsuario(id);
@@ -126,6 +132,21 @@ public class UsuarioService {
 
         TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(1)).get();
         entity.setTipoUsuario(tipoUsuarioEntity);
+
+        List<EnderecoEntity> enderecosEntity = new ArrayList<>();
+        for(Endereco endereco : usuario.getEnderecos()){
+            EnderecoEntity enderecoEntity = new EnderecoEntity();
+            enderecoEntity.setDsEndereco(endereco.getDsEndereco());
+            enderecoEntity.setDsBairro(endereco.getDsBairro());
+            enderecoEntity.setNrCep(endereco.getNrCep());
+            enderecoEntity.setIdCidade(endereco.getIdCidade());
+
+            enderecosEntity.add(enderecoEntity);
+
+//            enderecoEntity.setUsuario(entity);
+        }
+
+        entity.setEnderecos(enderecosEntity);
 
         repository.save(entity);
 
