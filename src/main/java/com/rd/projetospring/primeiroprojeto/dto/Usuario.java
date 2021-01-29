@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,5 +21,7 @@ public class Usuario{
     private String cpf;
 
     private Date dtNascimento;
+
+    private List<Endereco> enderecos;
 
 }

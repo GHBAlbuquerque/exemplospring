@@ -13,7 +13,7 @@ import java.util.List;
 public class EnderecoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_ENDERECO")
     private BigInteger idEndereco;
 

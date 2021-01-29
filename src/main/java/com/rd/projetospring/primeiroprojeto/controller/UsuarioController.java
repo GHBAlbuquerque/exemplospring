@@ -29,7 +29,7 @@ public class UsuarioController {
 
     @GetMapping("/usuario")
     public ResponseEntity getUsuarios(@PathParam("id") Long id){
-        List<UsuarioEntity> usuarios = service.getUsuarios();
+        List<Usuario> usuarios = service.getUsuarios();
 //        return ResponseEntity.ok(usuarios);
         return ResponseEntity.status(HttpStatus.OK).body(usuarios);
 //        return ResponseEntity.ok().body(usuarios);

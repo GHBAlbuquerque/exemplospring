@@ -1,7 +1,9 @@
 package com.rd.projetospring.primeiroprojeto.service;
 
 import com.fasterxml.jackson.databind.node.BigIntegerNode;
+import com.rd.projetospring.primeiroprojeto.dto.Endereco;
 import com.rd.projetospring.primeiroprojeto.dto.Usuario;
+import com.rd.projetospring.primeiroprojeto.entity.EnderecoEntity;
 import com.rd.projetospring.primeiroprojeto.entity.GeneroEntity;
 import com.rd.projetospring.primeiroprojeto.entity.TipoUsuarioEntity;
 import com.rd.projetospring.primeiroprojeto.entity.UsuarioEntity;
@@ -48,8 +50,39 @@ public class UsuarioService {
 //        return usuario;
     }
 
-    public List<UsuarioEntity> getUsuarios(){
-       return repository.findAll();
+    public List<Usuario> getUsuarios(){
+
+        List<UsuarioEntity> usuariosEntities = repository.findAll();
+
+        List<Usuario> usuariosDTO = new ArrayList<>();
+
+        for(UsuarioEntity usuarioEntity : usuariosEntities){
+            Usuario usuarioDTO = new Usuario();
+            usuarioDTO.setId(usuarioEntity.getIdUsuario().longValue());
+            usuarioDTO.setNome(usuarioEntity.getNome());
+            usuarioDTO.setCpf(usuarioEntity.getCpf());
+            usuarioDTO.setDtNascimento(usuarioEntity.getDtNascimento());
+
+            List<EnderecoEntity> enderecosEntity = usuarioEntity.getEnderecos();
+
+            List<Endereco> enderecosDTO = new ArrayList<>();
+
+            for(EnderecoEntity enderecoEntity : enderecosEntity){
+                Endereco endereco = new Endereco();
+                endereco.setIdEndereco(enderecoEntity.getIdEndereco());
+                endereco.setDsEndereco(enderecoEntity.getDsEndereco());
+                endereco.setDsBairro(enderecoEntity.getDsBairro());
+                endereco.setNrCep(enderecoEntity.getNrCep());
+
+                enderecosDTO.add(endereco);
+            }
+
+            usuarioDTO.setEnderecos(enderecosDTO);
+
+            usuariosDTO.add(usuarioDTO);
+        }
+
+        return usuariosDTO;
     }
 
     public List<UsuarioEntity> consultarPorNome(String nome){
