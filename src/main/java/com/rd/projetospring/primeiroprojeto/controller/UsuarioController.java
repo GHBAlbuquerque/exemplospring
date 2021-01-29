@@ -46,7 +46,8 @@ public class UsuarioController {
 
     @PutMapping("/usuario/{idUsuario}")
     public ResponseEntity alterar(@RequestBody Usuario usuario, @PathVariable("idUsuario") BigInteger id){
-        return ResponseEntity.ok().body(service.alterar(usuario, id));
+        String retorno = service.alterar(usuario, id);
+        return ResponseEntity.ok().body(retorno);
     }
 
     @DeleteMapping("/usuario/{id}")

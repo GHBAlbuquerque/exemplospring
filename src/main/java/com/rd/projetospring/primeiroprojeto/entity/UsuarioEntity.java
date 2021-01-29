@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "TB_USUARIO")
@@ -14,7 +15,7 @@ import java.util.Date;
 public class UsuarioEntity implements Serializable{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID_USUARIO")
     private BigInteger idUsuario;
 
@@ -47,5 +48,11 @@ public class UsuarioEntity implements Serializable{
     @Column(name="NR_CPF")
     private String cpf;
 
+    @ManyToMany
+    @JoinTable(name = "TB_USUARIO_ENDERECO",
+            joinColumns = @JoinColumn(name = "ID_USUARIO"),
+            inverseJoinColumns = @JoinColumn(name = "ID_ENDERECO")
+    )
+    private List<EnderecoEntity> enderecos;
 
 }

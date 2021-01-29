@@ -1,10 +1,16 @@
 package com.rd.projetospring.primeiroprojeto.service;
 
+import com.fasterxml.jackson.databind.node.BigIntegerNode;
 import com.rd.projetospring.primeiroprojeto.dto.Usuario;
+import com.rd.projetospring.primeiroprojeto.entity.GeneroEntity;
+import com.rd.projetospring.primeiroprojeto.entity.TipoUsuarioEntity;
 import com.rd.projetospring.primeiroprojeto.entity.UsuarioEntity;
+import com.rd.projetospring.primeiroprojeto.repository.GeneroRepository;
+import com.rd.projetospring.primeiroprojeto.repository.TipoUsuarioRepository;
 import com.rd.projetospring.primeiroprojeto.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -17,6 +23,12 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository repository;
+
+    @Autowired
+    private GeneroRepository generoRepository;
+
+    @Autowired
+    private TipoUsuarioRepository tipoUsuarioRepository;
 
     public UsuarioEntity getUsuario(BigInteger id){
         System.out.println("ID: " + id);
@@ -38,6 +50,10 @@ public class UsuarioService {
 
     public List<UsuarioEntity> getUsuarios(){
        return repository.findAll();
+    }
+
+    public List<UsuarioEntity> consultarPorNome(String nome){
+        return repository.findByNome(nome);
     }
 
     public String excluir (BigInteger id){
@@ -66,16 +82,26 @@ public class UsuarioService {
         return "Alteração realizado com sucesso";
     }
 
+    @Transactional
     public String cadastrar(Usuario usuario){
         UsuarioEntity entity = new UsuarioEntity();
         entity.setNome(usuario.getNome());
         entity.setCpf(usuario.getCpf());
-//        entity.setIdGenero(BigInteger.valueOf(1));
+
+        GeneroEntity genero = generoRepository.findById(BigInteger.valueOf(1)).get();
+        entity.setGenero(genero);
+
+        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(1)).get();
+        entity.setTipoUsuario(tipoUsuarioEntity);
 
         repository.save(entity);
 
         System.out.println(usuario.getId() + " . " + usuario.getNome() + " . " + usuario.getCpf() + " . " + usuario.getDtNascimento());
 
         return "Usuário cadastrado com sucesso";
+    }
+
+    public List<UsuarioEntity> consultarPorCpf(String cpf){
+        return repository.findByCpf(cpf);
     }
 }
