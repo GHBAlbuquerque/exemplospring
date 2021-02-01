@@ -9,11 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.websocket.server.PathParam;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class UsuarioController {
@@ -37,8 +42,17 @@ public class UsuarioController {
 
     @PostMapping("/usuario")
     public ResponseEntity cadastrar(@RequestBody Usuario usuario){
-        if(usuario.getNome() == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Atributo nome é obrigatório");
+//        if(usuario.getNome() == null)
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Atributo nome é obrigatório");
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+
+        Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);
+
+        for (ConstraintViolation<Usuario> violation : violations) {
+           return ResponseEntity.status(HttpStatus.CREATED).body(violation.getMessage());
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(service.cadastrar(usuario));
 
@@ -57,5 +71,11 @@ public class UsuarioController {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao excluir usuário");
         }
+    }
+
+    @GetMapping("/usuario/{cpf}")
+    public ResponseEntity getUsuario(@PathVariable("cpf") String cpf){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(service.consultarPorCpf(cpf));
     }
 }

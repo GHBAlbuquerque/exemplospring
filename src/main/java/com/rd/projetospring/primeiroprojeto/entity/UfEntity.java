@@ -13,7 +13,7 @@ import java.util.List;
 public class UfEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_UF")
     private BigInteger idUf;
 

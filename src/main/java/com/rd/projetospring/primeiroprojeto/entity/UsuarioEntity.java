@@ -35,8 +35,8 @@ public class UsuarioEntity implements Serializable{
 //    @Column(name="ID_TIPO_USUARIO")
 //    private BigInteger idTipoUsuario;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_TIPO_USUARIO")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID_TIPO_USUARIO", insertable = false, updatable = false)
     private TipoUsuarioEntity tipoUsuario;
 
     @Column(name="NM_NOME")
@@ -48,7 +48,7 @@ public class UsuarioEntity implements Serializable{
     @Column(name="NR_CPF")
     private String cpf;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(name = "TB_USUARIO_ENDERECO",
             joinColumns = @JoinColumn(name = "ID_USUARIO"),
             inverseJoinColumns = @JoinColumn(name = "ID_ENDERECO")

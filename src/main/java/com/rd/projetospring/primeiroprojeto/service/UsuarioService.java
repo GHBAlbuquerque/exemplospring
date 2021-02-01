@@ -59,35 +59,7 @@ public class UsuarioService {
 
         List<UsuarioEntity> usuariosEntities = repository.findAll();
 
-        List<Usuario> usuariosDTO = new ArrayList<>();
-
-        for(UsuarioEntity usuarioEntity : usuariosEntities){
-            Usuario usuarioDTO = new Usuario();
-            usuarioDTO.setId(usuarioEntity.getIdUsuario().longValue());
-            usuarioDTO.setNome(usuarioEntity.getNome());
-            usuarioDTO.setCpf(usuarioEntity.getCpf());
-            usuarioDTO.setDtNascimento(usuarioEntity.getDtNascimento());
-
-            List<EnderecoEntity> enderecosEntity = usuarioEntity.getEnderecos();
-
-            List<Endereco> enderecosDTO = new ArrayList<>();
-
-            for(EnderecoEntity enderecoEntity : enderecosEntity){
-                Endereco endereco = new Endereco();
-                endereco.setIdEndereco(enderecoEntity.getIdEndereco());
-                endereco.setDsEndereco(enderecoEntity.getDsEndereco());
-                endereco.setDsBairro(enderecoEntity.getDsBairro());
-                endereco.setNrCep(enderecoEntity.getNrCep());
-
-                enderecosDTO.add(endereco);
-            }
-
-            usuarioDTO.setEnderecos(enderecosDTO);
-
-            usuariosDTO.add(usuarioDTO);
-        }
-
-        return usuariosDTO;
+        return converterEntityToDTO(usuariosEntities);
     }
 
     public List<UsuarioEntity> consultarPorNome(String nome){
@@ -130,7 +102,7 @@ public class UsuarioService {
         GeneroEntity genero = generoRepository.findById(BigInteger.valueOf(1)).get();
         entity.setGenero(genero);
 
-        TipoUsuarioEntity tipoUsuarioEntity = tipoUsuarioRepository.findById(BigInteger.valueOf(1)).get();
+        TipoUsuarioEntity tipoUsuarioEntity = new TipoUsuarioEntity(); /// tipoUsuarioRepository.findById(BigInteger.valueOf(usuario.getIdTipoUsuario())).get();
         entity.setTipoUsuario(tipoUsuarioEntity);
 
         List<EnderecoEntity> enderecosEntity = new ArrayList<>();
@@ -155,7 +127,41 @@ public class UsuarioService {
         return "Usuário cadastrado com sucesso";
     }
 
-    public List<UsuarioEntity> consultarPorCpf(String cpf){
-        return repository.findByCpf(cpf);
+    public List<Usuario> consultarPorCpf(String cpf){
+        List<UsuarioEntity> listaUsuario = repository.findByCpf(cpf);
+
+        return converterEntityToDTO(listaUsuario);
+    }
+
+    private List<Usuario> converterEntityToDTO(List<UsuarioEntity> usuarioEntities){
+        List<Usuario> usuariosDTO = new ArrayList<>();
+
+        for(UsuarioEntity usuarioEntity : usuarioEntities){
+            Usuario usuarioDTO = new Usuario();
+            usuarioDTO.setId(usuarioEntity.getIdUsuario().longValue());
+            usuarioDTO.setNome(usuarioEntity.getNome());
+            usuarioDTO.setCpf(usuarioEntity.getCpf());
+            usuarioDTO.setDtNascimento(usuarioEntity.getDtNascimento());
+
+            List<EnderecoEntity> enderecosEntity = usuarioEntity.getEnderecos();
+
+            List<Endereco> enderecosDTO = new ArrayList<>();
+
+            for(EnderecoEntity enderecoEntity : enderecosEntity){
+                Endereco endereco = new Endereco();
+                endereco.setIdEndereco(enderecoEntity.getIdEndereco());
+                endereco.setDsEndereco(enderecoEntity.getDsEndereco());
+                endereco.setDsBairro(enderecoEntity.getDsBairro());
+                endereco.setNrCep(enderecoEntity.getNrCep());
+
+                enderecosDTO.add(endereco);
+            }
+
+            usuarioDTO.setEnderecos(enderecosDTO);
+
+            usuariosDTO.add(usuarioDTO);
+        }
+
+        return usuariosDTO;
     }
 }
