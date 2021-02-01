@@ -4,6 +4,7 @@ package com.rd.projetospring.primeiroprojeto.controller;
 import com.rd.projetospring.primeiroprojeto.dto.Usuario;
 import com.rd.projetospring.primeiroprojeto.entity.UsuarioEntity;
 import com.rd.projetospring.primeiroprojeto.service.UsuarioService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,14 @@ public class UsuarioController {
     private UsuarioService service;
 
     @GetMapping("/usuario/{id}")
+    @ApiOperation(value = "Consulta usuário por id")
     public ResponseEntity getUsuario(@PathVariable("id") BigInteger id){
         return ResponseEntity.status(HttpStatus.OK)
                              .body(service.getUsuario(id));
     }
 
     @GetMapping("/usuario")
+    @ApiOperation(value = "Lista todos usuários")
     public ResponseEntity getUsuarios(@PathParam("id") Long id){
         List<Usuario> usuarios = service.getUsuarios();
 //        return ResponseEntity.ok(usuarios);
@@ -41,6 +44,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/usuario")
+    @ApiOperation(value = "Cadastra usuário")
     public ResponseEntity cadastrar(@RequestBody Usuario usuario){
 //        if(usuario.getNome() == null)
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Atributo nome é obrigatório");
